@@ -1,44 +1,52 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DigitalClock extends JFrame {
 
-    JLabel clockLabel;
+    JLabel timeLabel, dateLabel;
 
-    public DigitalClock() {
+    DigitalClock() {
         setTitle("Digital Clock");
         setSize(400, 200);
-        setLayout(new FlowLayout());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // Label for time
-        clockLabel = new JLabel();
-        clockLabel.setFont(new Font("Arial", Font.BOLD, 40));
-        clockLabel.setForeground(Color.BLUE);
+        // Time Label
+        timeLabel = new JLabel();
+        timeLabel.setBounds(50, 30, 300, 50);
+        timeLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        timeLabel.setForeground(Color.BLUE);
+        add(timeLabel);
 
-        add(clockLabel);
+        // Date Label
+        dateLabel = new JLabel();
+        dateLabel.setBounds(50, 90, 300, 30);
+        dateLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        add(dateLabel);
 
-        // Timer (updates every 1 second)
-        Timer timer = new Timer(1000, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        // Timer to update every second
+        Timer t = new Timer(1000, e -> updateTime());
+        t.start();
 
-                // Get current time
-                Date date = new Date();
-
-                // Format time
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-
-                // Set text to label
-                clockLabel.setText(sdf.format(date));
-            }
-        });
-
-        timer.start();
-
+        updateTime();
         setVisible(true);
+    }
+
+    void updateTime() {
+        Date now = new Date();
+
+        // Time format
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
+        String time = timeFormat.format(now);
+
+        // Date format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+        String date = dateFormat.format(now);
+
+        timeLabel.setText(time);
+        dateLabel.setText(date);
     }
 
     public static void main(String[] args) {
